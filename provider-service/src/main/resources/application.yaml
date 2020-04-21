@@ -1,0 +1,64 @@
+spring:
+  profiles:
+    active: dev
+
+server:
+  port: 2001
+  undertow:
+    uri-encoding: UTF-8
+    accesslog:
+      enabled: false
+      pattern: combined
+  servlet:
+    session:
+      timeout: PT120M
+      cookie:
+        name: PROVIDER-SERVICE-SESSIONID #防止Cookie冲突，冲突会导致登录验证不通过
+        
+
+client:
+  http:
+    request:
+      connectTimeout: 8000
+      readTimeout: 30000
+      
+mybatis:
+  mapperLocations: classpath:mapper/*.xml
+  typeAliasesPackage: com.damon.*.model
+
+        
+backend:
+  ribbon:
+    client:
+      enabled: true
+    ServerListRefreshInterval: 5000
+
+ribbon:
+  ConnectTimeout: 3000
+  # 设置全局默认的ribbon的读超时
+  ReadTimeout: 1000
+  eager-load:
+    enabled: true
+    clients: oauth-cas,consumer-service
+  MaxAutoRetries: 1 #对第一次请求的服务的重试次数
+  MaxAutoRetriesNextServer: 1 #要重试的下一个服务的最大数量（不包括第一个服务）
+  #listOfServers: localhost:5556,localhost:5557
+  #ServerListRefreshInterval: 2000
+  OkToRetryOnAllOperations: true
+  NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule
+  
+  
+#oauth-cas:
+#  ribbon:
+#    ConnectTimeout: 3000
+#    ReadTimeout: 60000
+#    MaxAutoRetries: 1 #对第一次请求的服务的重试次数
+#    MaxAutoRetriesNextServer: 1 #要重试的下一个服务的最大数量（不包括第一个服务）
+#    listOfServers: localhost:5556,localhost:5557
+#    ServerListRefreshInterval: 2000
+#    OkToRetryOnAllOperations: true
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule
+
+    
+hystrix.command.BackendCall.execution.isolation.thread.timeoutInMilliseconds: 5000
+hystrix.threadpool.BackendCallThread.coreSize: 5

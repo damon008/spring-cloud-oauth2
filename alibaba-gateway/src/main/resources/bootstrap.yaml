@@ -1,0 +1,85 @@
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true #并且我们并没有给每一个服务单独配置路由 而是使用了服务发现自动注册路由的方式
+          lowerCaseServiceId: true
+          
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        server-addr: 127.0.0.1:8848
+        refreshable-dataids: actuator.properties,log.properties
+        
+        
+          
+      routes: #路由配置:参数为一个List
+      #001
+      - id: oauth-cas #唯一标识
+        uri: lb://oauth-cas #转发的地址,写服务名称
+        order: -1
+        predicates:
+        - Path=/oauth-cas/** #判断匹配条件,即地址带有/ribbon/**的请求,会转发至lb:oauth-cas
+        filters:
+        #======================================================
+        - StripPrefix=1 #去掉Path前缀,参数为1代表去掉/ribbon
+            
+      #002  
+      - id: provider-service
+        uri: lb://provider-service
+        order: -1
+        predicates:
+        - Path=/provider-service/**
+        filters:
+        #====================================
+        - StripPrefix=1
+            
+      #003      
+      - id: consumer-service
+        uri: lb://consumer-service
+        order: -1
+        predicates:
+        - Path=/consumer-service/**
+        filters:
+        - StripPrefix=1
+        
+      #004      
+      - id: resource-service
+        uri: lb://resource-service
+        order: -1
+        predicates:
+        - Path=/resource-service/**
+        filters:
+        - StripPrefix=1
+        
+        
+      #005
+      - id: test-sentinel
+        uri: lb://test-sentinel
+        order: -1
+        predicates:
+        - Path=/test-sentinel/**
+        filters:
+        - StripPrefix=1
+        
+        
+      #006
+      - id: test-sentinel-feign
+        uri: lb://test-sentinel-feign
+        order: -1
+        predicates:
+        - Path=/test-sentinel-feign/**
+        filters:
+        - StripPrefix=1
+
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  main:
+    allow-bean-definition-overriding: true # 当遇到同样名称时，是否允许覆盖注册

@@ -1,0 +1,44 @@
+management:
+  endpoint:
+    restart:
+      enabled: true
+    health:
+      enabled: true
+    info:
+      enabled: true
+
+spring:
+  application:
+    name: oauth-cas
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        server-addr: 127.0.0.1:8848
+        refreshable-dataids: actuator.properties,log.properties
+        
+  redis: #redis相关配置
+    database: 8
+    host: 127.0.0.1 #10.10.1.5 #localhost
+    port: 6379
+    password: sofawang #xylx1.t123 #sofawang #有密码时设置
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+    timeout: 10000ms
+    
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  main:
+    allow-bean-definition-overriding: true # 当遇到同样名称时，是否允许覆盖注册
+    
+logging:
+  path: /data/${spring.application.name}/logs

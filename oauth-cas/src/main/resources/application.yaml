@@ -1,0 +1,26 @@
+server:
+  port: 2000
+  undertow:
+    uri-encoding: UTF-8
+    accesslog:
+      enabled: false
+      pattern: combined
+  servlet:
+    session:
+      timeout: PT120M
+      
+        
+client:
+  http:
+    request:
+      connectTimeout: 8000
+      readTimeout: 30000
+      
+mybatis:
+  mapperLocations: classpath:mapper/*.xml
+  typeAliasesPackage: com.damon.*.model
+
+  
+spring:
+  profiles:
+    active: dev

@@ -1,0 +1,70 @@
+management:
+  endpoint:
+    restart:
+      enabled: true
+    health:
+      enabled: true
+    info:
+      enabled: true
+      
+spring:
+  application:
+    name: provider-service
+  #redis: #redis相关配置
+    #database: 8
+    #host: 10.10.1.5 #localhost
+    #port: 6379
+    #password: xylx1.t123 #sofawang #有密码时设置
+    #jedis:
+      #pool:
+        #max-active: 8
+        #max-idle: 8
+        #min-idle: 0
+    #timeout: 10000ms
+    
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        server-addr: 127.0.0.1:8848
+        refreshable-dataids: actuator.properties,log.properties
+        
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  main:
+    allow-bean-definition-overriding: true #当遇到同样名称时，是否允许覆盖注册
+    
+
+logging:
+  path: /data/${spring.application.name}/logs
+
+cas-server-url: http://localhost:2000 #http://localhost:2000 #设置可以访问的地址http://localhost:2000用于授权码模式下的测试，但不能用域名LB来测试，待检查
+
+security:
+  path:
+    #需要忽略的地址
+    ignores: /,/index,/static/**,/css/**, /image/**, /favicon.ico, /js/**,/plugin/**,/avue.min.js,/img/**,/fonts/**
+  oauth2: #与cas对应的配置
+    client:
+      client-id: provider-service
+      client-secret: provider-service-123
+      user-authorization-uri: ${cas-server-url}/oauth/authorize #是授权码认证方式需要的
+      access-token-uri: ${cas-server-url}/oauth/token #是密码模式需要用到的获取 token 的接口
+    resource:
+      #loadBalanced: true #授权码模式下暂时不能通过LB来处理
+      #jwt: #jwt存储token时开启
+        #key-uri: ${cas-server-url}/oauth/token_key
+        #key-value: test_jwt_sign_key
+      id: provider-service
+      #指定用户信息地址
+      user-info-uri: ${cas-server-url}/api/user #指定user info的URI，原生地址后缀为/auth/user
+      prefer-token-info: false
+      #token-info-uri: 
+    authorization:
+      check-token-access: ${cas-server-url}/oauth/check_token #当此web服务端接收到来自UI客户端的请求后，需要拿着请求中的 token 到认证服务端做 token 验证，就是请求的这个接口
