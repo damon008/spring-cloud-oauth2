@@ -67,7 +67,7 @@ http://localhost:2001/api/user/getCurrentUser?access_token=a2af3f0b-27da-41b8-90
 
 curl -i -X POST -d "grant_type=refresh_token&refresh_token=91c22287-aa24-4305-95cf-38f7903865f3&client_id=provider-service&client_secret=provider-service-123" http://localhost:2000/oauth/token
 
-3. 本次提供基于网关的限流功能、基于阿里相关组件实现 LB，基于Oauth2实现统一鉴权认证，以及基于 Ribbon 的 LB 、基于Hystrix 的熔断机制等
+### 本次提供基于网关的限流功能、基于阿里相关组件实现 LB，基于Oauth2实现统一鉴权认证，以及基于 Ribbon 的 LB 、基于Hystrix 的熔断机制等
 
 #### 参与贡献
 
