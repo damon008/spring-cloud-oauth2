@@ -26,7 +26,7 @@
 		<pageHelper.version>4.1.6</pageHelper.version>
 		<fastjson.version>1.2.51</fastjson.version>
 		<springcloud.version>Greenwich.SR3</springcloud.version>
-		<mysql.version>5.1.46</mysql.version>
+		<mysql.version>8.0.28</mysql.version>
 		
 		<alibaba-cloud.version>2.1.1.RELEASE</alibaba-cloud.version>
 		<springcloud.alibaba.version>0.9.0.RELEASE</springcloud.alibaba.version>
